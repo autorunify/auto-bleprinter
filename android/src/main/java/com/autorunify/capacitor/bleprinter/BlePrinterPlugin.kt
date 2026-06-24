@@ -241,7 +241,11 @@ class BlePrinterPlugin : Plugin {
                 val imageData = call.getObject("imageData")
                     ?: return@launch call.reject("imageData is required")
 
-                val colors = IntArray(imageData.length() / 4)
+                val colors = IntArray(width * height)
+                var colorConfig = Bitmap.Config.ARGB_8888
+
+                val colorsType = imageData.length() / (width * height)
+                if (colorsType != 4) return@launch call.reject("imageData type not Uint8ClampedArray")
 
                 for (i in 0..<colors.size) {
                     val R = imageData.getInt((i * 4 + 0).toString())
@@ -258,9 +262,9 @@ class BlePrinterPlugin : Plugin {
                     colors[i] = color
                 }
 
-                async.on(call,PRINTER_PRINT_FINISHED)
+                async.on(call, PRINTER_PRINT_FINISHED)
                 printer!!.printImage(
-                    Bitmap.createBitmap(colors, width, height, Bitmap.Config.ARGB_8888),
+                    Bitmap.createBitmap(colors, width, height, colorConfig),
                     width,
                     height
                 )
