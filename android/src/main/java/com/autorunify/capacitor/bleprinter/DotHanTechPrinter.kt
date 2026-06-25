@@ -25,6 +25,9 @@ class DotHanTechPrinter : BlePrinter {
 
         override fun onStateChange(p0: IDzPrinter.PrinterAddress?, p1: IDzPrinter.PrinterState?) {
             Log.w("BlePrinter", "onStateChange: ${p0?.shownName} ${p1?.name}")
+            if (p1== IDzPrinter.PrinterState.Connected){
+                this.printer.adapter.setPrintPageGapType(0)
+            }
         }
 
         override fun onPrintProgress(
@@ -110,9 +113,10 @@ class DotHanTechPrinter : BlePrinter {
         val _device = scaner.devices.firstOrNull { device -> device.address == address }
         if (_device == null) return
 
-        val address = IDzPrinter.PrinterAddress(_device.address, IDzPrinter.AddressType.BLE)
-        this.adapter.openPrinterByAddressSync(address)
-        this.adapter.setPrintPageGapType(0)
+        this.adapter.openPrinter(_device.device)
+//        val address = IDzPrinter.PrinterAddress(_device.address, IDzPrinter.AddressType.BLE)
+//        this.adapter.openPrinterByAddressSync(address)
+//        this.adapter.setPrintPageGapType(0)
     }
 
     override fun disconnect() {

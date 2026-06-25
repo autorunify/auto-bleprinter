@@ -270,12 +270,17 @@ class BlePrinterPlugin : Plugin {
                 }
 
                 val oriBitmap = Bitmap.createBitmap(colors, width, height, colorConfig)
-                val newWidth = (width * scale).toInt()
-                val newHeight = (height * scale).toInt()
-                val scaleBitmap = oriBitmap.scale(newWidth, newHeight)
+                if (scale != 1.0f) {
+                    val newWidth = (width * scale).toInt()
+                    val newHeight = (height * scale).toInt()
+                    val scaleBitmap = oriBitmap.scale(newWidth, newHeight)
 
-                async.on(call, PRINTER_PRINT_FINISHED)
-                printer!!.printImage(scaleBitmap)
+                    async.on(call, PRINTER_PRINT_FINISHED)
+                    printer!!.printImage(scaleBitmap)
+                } else {
+                    async.on(call, PRINTER_PRINT_FINISHED)
+                    printer!!.printImage(oriBitmap)
+                }
             } catch (ex: Exception) {
                 call.reject(ex.message)
             }
