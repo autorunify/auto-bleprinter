@@ -51,6 +51,7 @@ export interface ConnectOptions extends TimeoutOptions {
 }
 
 export interface PrintImageOptions {
+  scale?: number,
   width: number,
   height: number,
   imageData: ImageDataArray

@@ -25,5 +25,5 @@ abstract class BlePrinter {
     abstract fun connect(address: String)
     abstract fun disconnect()
 
-    abstract fun printImage(bitmap: Bitmap, width: Int, height: Int)
+    abstract fun printImage(bitmap: Bitmap)
 }

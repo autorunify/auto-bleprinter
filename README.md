@@ -306,6 +306,7 @@ addListener(event: 'state', callback: (e: OnStateChangeEvent) => void) => Promis
 
 | Prop            | Type                        |
 | --------------- | --------------------------- |
+| **`scale`**     | <code>number</code>         |
 | **`width`**     | <code>number</code>         |
 | **`height`**    | <code>number</code>         |
 | **`imageData`** | <code>ImageDataArray</code> |

@@ -3,6 +3,7 @@ package com.autorunify.capacitor.bleprinter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.scale
 import com.autorunify.capacitor.bleprinter.SystemAsyncCall.Companion.PRINTER_PRINT_FINISHED
 import com.autorunify.capacitor.bleprinter.SystemAsyncCall.Companion.PRINTER_STATE_CONNECTED
 import com.autorunify.capacitor.bleprinter.SystemAsyncCall.Companion.PRINTER_STATE_DISCONNECTED
@@ -245,6 +246,8 @@ class BlePrinterPlugin : Plugin {
                 val imageData = call.getObject("imageData")
                     ?: return@launch call.reject("imageData is required")
 
+                val scale = call.getFloat("scale", 1.0f)!!
+
                 val colors = IntArray(width * height)
                 var colorConfig = Bitmap.Config.ARGB_8888
 
@@ -266,12 +269,13 @@ class BlePrinterPlugin : Plugin {
                     colors[i] = color
                 }
 
+                val oriBitmap = Bitmap.createBitmap(colors, width, height, colorConfig)
+                val newWidth = (width * scale).toInt()
+                val newHeight = (height * scale).toInt()
+                val scaleBitmap = oriBitmap.scale(newWidth, newHeight)
+
                 async.on(call, PRINTER_PRINT_FINISHED)
-                printer!!.printImage(
-                    Bitmap.createBitmap(colors, width, height, colorConfig),
-                    width,
-                    height
-                )
+                printer!!.printImage(scaleBitmap)
             } catch (ex: Exception) {
                 call.reject(ex.message)
             }

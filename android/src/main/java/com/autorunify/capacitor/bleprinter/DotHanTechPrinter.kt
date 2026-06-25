@@ -121,9 +121,9 @@ class DotHanTechPrinter : BlePrinter {
         }
     }
 
-    override fun printImage(bitmap: Bitmap, width: Int, height: Int) {
-        val widthMm = px2mm(width.toDouble(), DPI)
-        val heightMm = px2mm(height.toDouble(), DPI) + 10
+    override fun printImage(bitmap: Bitmap) {
+        val widthMm = px2mm(bitmap.width.toDouble(), DPI)
+        val heightMm = px2mm(bitmap.height.toDouble(), DPI) + 10
 
         if (!adapter.startJob(widthMm, heightMm, 0)) return
         if (!adapter.drawBitmapWithThreshold(bitmap, 0.0, 0.0, 0.0, 0.0, 256)) return
