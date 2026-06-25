@@ -93,9 +93,12 @@ async function onBlePrinterKill() {
 async function onBlePrinterScan() {
   devicesRef.value = []
 
-  const { devices } = await BlePrinter.devices()
+  const { devices } = await BlePrinter.devices({ max: 1 })
   devicesRef.value = devices
-  console.log(devices)
+
+
+  await onBlePrinterConnect(devices[0])
+  await onBlePrinterDraw()
 }
 
 async function onBlePrinterConnect(dev: BleDevice) {
@@ -126,19 +129,19 @@ async function onBlePrinterDraw() {
     imageData: imageData.data
   })
 
-  await BlePrinter.printImage({
-    scale: 2,
-    width,
-    height,
-    imageData: imageData.data
-  })
+  // await BlePrinter.printImage({
+  //   scale: 2,
+  //   width,
+  //   height,
+  //   imageData: imageData.data
+  // })
 
-    await BlePrinter.printImage({
-    scale: 0.5,
-    width,
-    height,
-    imageData: imageData.data
-  })
+  //   await BlePrinter.printImage({
+  //   scale: 0.5,
+  //   width,
+  //   height,
+  //   imageData: imageData.data
+  // })
 }
 
 onMounted(() => {

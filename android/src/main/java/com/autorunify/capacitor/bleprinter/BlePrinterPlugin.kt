@@ -141,9 +141,14 @@ class BlePrinterPlugin : Plugin {
 
         if (printer == null) return call.resolve()
 
-        ble.kill()
-        printer!!.kill()
-        printer = null
+        try {
+            ble.kill()
+            printer!!.kill()
+            printer = null
+            call.resolve()
+        }catch (ex: Exception){
+            call.reject(ex.message)
+        }
     }
 
     @PluginMethod
