@@ -269,6 +269,10 @@ addListener(event: 'state', callback: (e: OnStateChangeEvent) => void) => Promis
 
 #### ScanOptions
 
+| Prop      | Type                |
+| --------- | ------------------- |
+| **`max`** | <code>number</code> |
+
 
 #### ConnectionState
 

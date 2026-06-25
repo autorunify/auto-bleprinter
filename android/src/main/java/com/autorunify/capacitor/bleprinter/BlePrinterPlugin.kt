@@ -154,8 +154,12 @@ class BlePrinterPlugin : Plugin {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val timeout = call.getInt("timeout", 5000)
-                val devices = printer!!.devices(timeout!!)
+                val timeout = call.getInt("timeout", 5)!!
+                val max = call.getInt("max", 0)
+                val devices = printer!!.devices(
+                    max,
+                    if (timeout <= 0) 1000 else timeout * 1000
+                )
 
                 call.resolve(JSObject().apply {
                     put("devices", JSArray().apply {

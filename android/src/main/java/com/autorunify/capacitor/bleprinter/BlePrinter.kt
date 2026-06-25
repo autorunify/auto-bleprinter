@@ -20,7 +20,7 @@ abstract class BlePrinter {
     abstract fun init()
     abstract fun kill()
 
-    abstract suspend fun devices(timeout: Int): MutableList<BleDevice>
+    abstract suspend fun devices(max: Int, timeout: Int): MutableList<BleDevice>
 
     abstract fun connect(address: String)
     abstract fun disconnect()

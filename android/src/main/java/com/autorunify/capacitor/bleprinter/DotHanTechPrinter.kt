@@ -69,7 +69,7 @@ class DotHanTechPrinter : BlePrinter {
         this.adapter.closePrinter()
     }
 
-    override suspend fun devices(timeout: Int): MutableList<BleDevice> {
+    override suspend fun devices(max: Int, timeout: Int): MutableList<BleDevice> {
         this.scaner.scan(false)
         this.scaner.filters = mutableListOf<ScanFilter>()
         this.scaner.filters.add(
@@ -81,7 +81,18 @@ class DotHanTechPrinter : BlePrinter {
 
         this.scaner.devices.clear()
         this.scaner.scan(true);
-        delay(timeout.toLong())
+
+        val timeMillis = 200L
+        var timeCount = timeout.toLong() / timeMillis
+
+        while (timeCount > 0) {
+            delay(timeMillis)
+            if (max > 0 && scaner.devices.size >= max) {
+                break
+            }
+
+            timeCount--
+        }
 
         this.scaner.scan(false)
         val _devices: MutableList<BleDevice> = mutableListOf()
@@ -91,6 +102,7 @@ class DotHanTechPrinter : BlePrinter {
                 _devices.add(device)
             }
         }
+
         return _devices
     }
 

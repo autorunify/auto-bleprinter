@@ -43,7 +43,7 @@ export interface InitOptions {
 }
 
 export interface ScanOptions extends TimeoutOptions {
-
+  max?: number
 }
 
 export interface ConnectOptions extends TimeoutOptions {
