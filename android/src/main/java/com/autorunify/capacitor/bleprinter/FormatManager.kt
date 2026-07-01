@@ -16,38 +16,24 @@ class FormatManager {
         val sb = StringBuilder()
         val lsb = StringBuilder()
         val sr = StringReader(value)
-        var char: Char = '0'
-        var state = 0
-        var readChar = sr.read()
+        var nextChar: Int
+        var fisrtChar = sr.read()
 
-        while (readChar != -1) {
-            when (state) {
-                0 -> {
-                    char = readChar.toChar()
-                    state = 1
+        while (fisrtChar != -1) {
+            nextChar = sr.read()
+            if (nextChar.toChar() == '!') {
+                nextChar = sr.read()
+                while (nextChar.toChar() != '!') {
+                    lsb.append(nextChar.toChar())
+                    nextChar = sr.read()
                 }
-
-                1 -> {
-                    if (readChar.toChar() == '!') {
-                        lsb.clear()
-                        state = 2
-                    } else {
-                        sb.append(char)
-                        char = readChar.toChar()
-                    }
-                }
-
-                2 -> {
-                    if (readChar.toChar() == '!') {
-                        sb.append(char.toString().repeat(lsb.toString().toInt(16)))
-                        state = 0
-                    } else {
-                        lsb.append(readChar.toChar())
-                    }
-                }
+                sb.append(fisrtChar.toChar().toString().repeat(lsb.toString().toInt(16)))
+                lsb.clear()
+                fisrtChar = sr.read()
+            } else {
+                sb.append(fisrtChar.toChar())
+                fisrtChar = nextChar
             }
-
-            readChar = sr.read()
         }
 
         return sb.toString()
