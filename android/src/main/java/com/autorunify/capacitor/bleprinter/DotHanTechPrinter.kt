@@ -60,9 +60,16 @@ class DotHanTechPrinter : BlePrinter {
     private val receiver: DotHanTechReceiver = DotHanTechReceiver(this)
     private lateinit var adapter: LPAPI
     private val DPI = 300
+    private val filters = mutableListOf<ScanFilter>()
 
     constructor(scanner: BleManager) : super(scanner) {
         this.async = scanner.async
+        this.filters.add(
+            ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid(UUID.fromString("000018f0-0000-1000-8000-00805f9b34fb")))
+                .build()
+
+        )
     }
 
     override fun init() {
@@ -75,13 +82,7 @@ class DotHanTechPrinter : BlePrinter {
 
     override suspend fun devices(max: Int, timeout: Int): MutableList<BleDevice> {
         this.scaner.scan(false)
-        this.scaner.filters = mutableListOf<ScanFilter>()
-        this.scaner.filters.add(
-            ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid(UUID.fromString("000018f0-0000-1000-8000-00805f9b34fb")))
-                .build()
-
-        )
+        this.scaner.filters = this.filters
 
         this.scaner.devices.clear()
         this.scaner.scan(true);

@@ -14,7 +14,7 @@
       </ion-header>
 
       <div id="container">
-        <canvas ref="canvasRef" width="300" height="600" style="border:1px solid #ccc"></canvas>
+        <canvas ref="canvasRef" width="300" height="400" style="border:1px solid #ccc"></canvas>
 
         <ion-list>
           <ion-item v-for="dev in devicesRef">
@@ -130,12 +130,10 @@ async function onBlePrinterDraw() {
     image: new ImageCompressor(imageData)
   })
 
-  // await BlePrinter.printImage({
-  //   scale: 2,
-  //   width,
-  //   height,
-  //   imageData: imageData.data
-  // })
+  await BlePrinter.printImage({
+    scale: 2,
+    image: new ImageCompressor(imageData)
+  })
 
   //   await BlePrinter.printImage({
   //   scale: 0.5,
