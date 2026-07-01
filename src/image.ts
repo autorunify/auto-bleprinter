@@ -17,6 +17,36 @@ export class ImageCompressor {
     if (colorsType != 4) throw Error("imageData type not Uint8ClampedArray")
 
     const values = data.values() as any
-    this.colors = encode(values as ArrayBuffer)
+    this.colors = this.RLE(encode(values as ArrayBuffer))
+  }
+
+  private RLE(value: string): string {
+    if (value.length == 0) return ""
+
+    var rle = ""
+    var count = 1
+
+    for (var idx = 0; idx < value.length; idx++) {
+      if (value[idx] == value[idx - 1]) {
+        count++
+      } else {
+        rle += value.charAt(idx - 1)
+        if (count > 1) {
+          rle += '!'
+          rle += count.toString(16)
+          rle += '!'
+        }
+        count = 1
+      }
+    }
+
+    rle += value.charAt(idx - 1)
+    if (count > 1) {
+      rle += '!'
+      rle += count.toString(16)
+      rle += '!'
+    }
+
+    return rle
   }
 }

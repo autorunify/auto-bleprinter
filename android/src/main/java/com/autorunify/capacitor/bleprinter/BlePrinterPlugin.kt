@@ -253,10 +253,10 @@ class BlePrinterPlugin : Plugin {
                     ?: return@launch call.reject("image.width is required")
                 val height = image.getInteger("height")
                     ?: return@launch call.reject("image.height is required")
-                val colorsBase64 = image.getString("colors")
+                val colorsRLE = image.getString("colors")
                     ?: return@launch call.reject("image.colors is required")
 
-                val imageData = Base64.decode(colorsBase64)
+                val imageData = Base64.decode(formatter.RLE(colorsRLE))
                 val colors = IntArray(width * height)
                 val colorsType = imageData.size / (width * height)
                 if (colorsType != 4) return@launch call.reject("imageData type not Uint8ClampedArray")

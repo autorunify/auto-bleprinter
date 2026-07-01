@@ -14,7 +14,7 @@
       </ion-header>
 
       <div id="container">
-        <canvas ref="canvasRef" width="300" height="400" style="border:1px solid #ccc"></canvas>
+        <canvas ref="canvasRef" width="300" height="200" style="border:1px solid #ccc"></canvas>
 
         <ion-list>
           <ion-item v-for="dev in devicesRef">
@@ -130,10 +130,10 @@ async function onBlePrinterDraw() {
     image: new ImageCompressor(imageData)
   })
 
-  await BlePrinter.printImage({
-    scale: 2,
-    image: new ImageCompressor(imageData)
-  })
+  // await BlePrinter.printImage({
+  //   scale: 2,
+  //   image: new ImageCompressor(imageData)
+  // })
 
   //   await BlePrinter.printImage({
   //   scale: 0.5,
@@ -168,20 +168,20 @@ onMounted(() => {
 
   // 2. 绘制实心文字 (文本, x坐标, y坐标)
   ctx.fillStyle = 'black';
-  ctx.fillText('Hello Canvas', 10, 0);
+  ctx.fillText('Hello Canvas', 10, 30);
 
   // 3. 绘制描边文字
   ctx.fillStyle = 'red';
-  ctx.fillText('Red Canvas', 10, 30);
+  ctx.fillText('Red Canvas', 10, 60);
 
   ctx.fillStyle = 'green';
-  ctx.fillText('Green Canvas', 10, 60);
+  ctx.fillText('Green Canvas', 10, 90);
 
   ctx.fillStyle = 'blue';
-  ctx.fillText('Blue Canvas', 10, 90);
+  ctx.fillText('Blue Canvas', 10, 120);
 
   ctx.fillStyle = 'yellow';
-  ctx.fillText('Yellow Canvas', 10, 120);
+  ctx.fillText('Yellow Canvas', 10, 150);
 })
 </script>
 
