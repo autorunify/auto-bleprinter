@@ -1,4 +1,5 @@
 import type { PluginListenerHandle } from '@capacitor/core'
+import type { ImageCompressor } from './image'
 
 export type PermissionState = 'denied' | 'granted'
 
@@ -52,9 +53,7 @@ export interface ConnectOptions extends TimeoutOptions {
 
 export interface PrintImageOptions {
   scale?: number,
-  width: number,
-  height: number,
-  imageData: ImageDataArray
+  image: ImageCompressor
 }
 
 export interface PrintImageResults {

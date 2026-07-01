@@ -6,5 +6,7 @@ const BlePrinter = registerPlugin<BlePrinterPlugin>('BlePrinter', {
   web: () => import('./web').then((m) => new m.BlePrinterWeb()),
 });
 
+
+export * from './image'
 export * from './definitions';
 export { BlePrinter };

@@ -304,12 +304,10 @@ addListener(event: 'state', callback: (e: OnStateChangeEvent) => void) => Promis
 
 #### PrintImageOptions
 
-| Prop            | Type                        |
-| --------------- | --------------------------- |
-| **`scale`**     | <code>number</code>         |
-| **`width`**     | <code>number</code>         |
-| **`height`**    | <code>number</code>         |
-| **`imageData`** | <code>ImageDataArray</code> |
+| Prop        | Type                         |
+| ----------- | ---------------------------- |
+| **`scale`** | <code>number</code>          |
+| **`image`** | <code>ImageCompressor</code> |
 
 
 #### PluginListenerHandle

@@ -19,6 +19,7 @@ import com.getcapacitor.annotation.PermissionCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.io.encoding.Base64
 
 
 @CapacitorPlugin(
@@ -146,7 +147,7 @@ class BlePrinterPlugin : Plugin {
             printer!!.kill()
             printer = null
             call.resolve()
-        }catch (ex: Exception){
+        } catch (ex: Exception) {
             call.reject(ex.message)
         }
     }
@@ -244,26 +245,29 @@ class BlePrinterPlugin : Plugin {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val width = call.getInt("width")
-                    ?: return@launch call.reject("width is required")
-                val height = call.getInt("height")
-                    ?: return@launch call.reject("height is required")
-                val imageData = call.getObject("imageData")
-                    ?: return@launch call.reject("imageData is required")
-
                 val scale = call.getFloat("scale", 1.0f)!!
+                val image = call.getObject("image")
+                    ?: return@launch call.reject("image is required")
 
+                val width = image.getInteger("width")
+                    ?: return@launch call.reject("image.width is required")
+                val height = image.getInteger("height")
+                    ?: return@launch call.reject("image.height is required")
+                val colorsBase64 = image.getString("colors")
+                    ?: return@launch call.reject("image.colors is required")
+
+                val imageData = Base64.decode(colorsBase64)
                 val colors = IntArray(width * height)
                 var colorConfig = Bitmap.Config.ARGB_8888
 
-                val colorsType = imageData.length() / (width * height)
+                val colorsType = imageData.size / (width * height)
                 if (colorsType != 4) return@launch call.reject("imageData type not Uint8ClampedArray")
 
                 for (i in 0..<colors.size) {
-                    val R = imageData.getInt((i * 4 + 0).toString())
-                    val G = imageData.getInt((i * 4 + 1).toString())
-                    val B = imageData.getInt((i * 4 + 2).toString())
-                    val A = imageData.getInt((i * 4 + 3).toString())
+                    val R = imageData[(i * 4 + 0)].toInt()
+                    val G = imageData[(i * 4 + 1)].toInt()
+                    val B = imageData[(i * 4 + 2)].toInt()
+                    val A = imageData[(i * 4 + 3)].toInt()
 
                     var color = 0
                     color += ((A and 0xff) shl 24)

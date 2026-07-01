@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.os.ParcelUuid
 import android.util.Log
 import com.autorunify.capacitor.bleprinter.SystemAsyncCall.Companion.PRINTER_PRINT_FINISHED
+import com.autorunify.capacitor.bleprinter.SystemAsyncCall.Companion.PRINTER_STATE_DISCONNECTED
 import com.dothantech.lpapi.LPAPI
 import com.dothantech.printer.IDzPrinter
 import com.getcapacitor.JSObject
@@ -25,7 +26,7 @@ class DotHanTechPrinter : BlePrinter {
 
         override fun onStateChange(p0: IDzPrinter.PrinterAddress?, p1: IDzPrinter.PrinterState?) {
             Log.w("BlePrinter", "onStateChange: ${p0?.shownName} ${p1?.name}")
-            if (p1== IDzPrinter.PrinterState.Connected){
+            if (p1 == IDzPrinter.PrinterState.Connected) {
                 this.printer.adapter.setPrintPageGapType(0)
             }
         }
@@ -122,6 +123,8 @@ class DotHanTechPrinter : BlePrinter {
     override fun disconnect() {
         if (this.adapter.isPrinterOpened) {
             this.adapter.closePrinter()
+        } else {
+            async.emit(JSObject(), PRINTER_STATE_DISCONNECTED)
         }
     }
 

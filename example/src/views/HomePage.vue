@@ -14,7 +14,7 @@
       </ion-header>
 
       <div id="container">
-        <canvas ref="canvasRef" width="260" height="150" style="border:1px solid #ccc"></canvas>
+        <canvas ref="canvasRef" width="300" height="600" style="border:1px solid #ccc"></canvas>
 
         <ion-list>
           <ion-item v-for="dev in devicesRef">
@@ -39,8 +39,8 @@
 <script setup lang="ts">
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonList, IonItem } from '@ionic/vue';
 import { NrfMesh, PermissionKey } from '@autorunify/capacitor-nrfmesh'
-import { BleDevice, BlePrinter } from '@autorunify/capacitor-bleprinter'
-import { onMounted, ref, useTemplateRef } from 'vue';
+import { BleDevice, BlePrinter, ImageCompressor, } from '@autorunify/capacitor-bleprinter'
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 
 const devicesRef = ref<Array<BleDevice>>([])
 const connected = ref<Boolean>(false)
@@ -99,6 +99,8 @@ async function onBlePrinterScan() {
 
   await onBlePrinterConnect(devices[0])
   await onBlePrinterDraw()
+  await BlePrinter.disconnect()
+  await BlePrinter.kill()
 }
 
 async function onBlePrinterConnect(dev: BleDevice) {
@@ -124,9 +126,8 @@ async function onBlePrinterDraw() {
   const imageData = ctx.getImageData(0, 0, width, height)
 
   await BlePrinter.printImage({
-    width,
-    height,
-    imageData: imageData.data
+    scale: 1,
+    image: new ImageCompressor(imageData)
   })
 
   // await BlePrinter.printImage({

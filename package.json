@@ -1,6 +1,6 @@
 {
   "name": "@autorunify/capacitor-bleprinter",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "ble printer plugin",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -77,5 +77,8 @@
     "android": {
       "src": "android"
     }
+  },
+  "dependencies": {
+    "base64-arraybuffer": "^1.0.2"
   }
 }
